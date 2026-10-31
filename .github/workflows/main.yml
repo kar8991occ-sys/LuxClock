@@ -21,11 +21,10 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install SDK
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - name: Install Android SDK packages
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -33,8 +32,7 @@ jobs:
           gradle-version: '8.9'
 
       - name: Extract project
-        run: |
-          unzip -q LuxClock-Android-Project.zip -d extracted
+        run: unzip -q LuxClock-Android-Project.zip -d extracted
 
       - name: Build APK
         run: |
@@ -46,3 +44,4 @@ jobs:
         with:
           name: LuxClock-APK
           path: extracted/LuxClock/app/build/outputs/apk/debug/app-debug.apk
+
