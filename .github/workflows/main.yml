@@ -33,6 +33,9 @@ jobs:
 
       - name: Extract project
         run: unzip -q LuxClock-Android-Project.zip -d extracted
+              - name: Fix widget description
+        run: |
+          python3 -c "from pathlib import Path; import re; p=Path('extracted/LuxClock/app/src/main/res/xml/lux_clock_widget_info.xml'); s=p.read_text(); s=re.sub(r'\s*android:description=\"[^\"]*\"', '', s); p.write_text(s)"
 
       - name: Build APK
         run: |
